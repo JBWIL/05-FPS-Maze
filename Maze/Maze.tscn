@@ -1,8 +1,13 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Maze/Maze.gd" type="Script" id=1]
 [ext_resource path="res://Player/Player.gd" type="Script" id=2]
 [ext_resource path="res://UI/Menu.gd" type="Script" id=3]
+[ext_resource path="res://Key/key.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Exit/Exit.gd" type="Script" id=5]
+
+[sub_resource type="SphereShape" id=5]
+radius = 0.5
 
 [sub_resource type="CapsuleMesh" id=1]
 radius = 0.5
@@ -23,6 +28,24 @@ extents = Vector3( 0.4, 0.1, 0.4 )
 pause_mode = 2
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, -2, -0.5 )
 script = ExtResource( 1 )
+
+[node name="key" parent="Maze" instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.225929, 0.621799, -0.0268634 )
+
+[node name="Exit" type="Area" parent="Maze"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.193272, -0.363533, -0.435425 )
+script = ExtResource( 5 )
+
+[node name="OmniLight" type="OmniLight" parent="Maze/Exit"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.776405, 0 )
+light_color = Color( 1, 0, 0, 1 )
+light_energy = 10.0
+omni_range = 3.0
+omni_attenuation = 2.0
+
+[node name="CollisionShape" type="CollisionShape" parent="Maze/Exit"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.894373, 0.966982, 0.0194455 )
+shape = SubResource( 5 )
 
 [node name="Player" type="KinematicBody" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
@@ -78,5 +101,6 @@ margin_right = 574.0
 margin_bottom = 340.0
 text = "Quit"
 
+[connection signal="body_entered" from="Maze/Exit" to="Maze/Exit" method="_on_Exit_body_entered"]
 [connection signal="pressed" from="Menu/Restart" to="Menu" method="_on_Restart_pressed"]
 [connection signal="pressed" from="Menu/Quit" to="Menu" method="_on_Quit_pressed"]
